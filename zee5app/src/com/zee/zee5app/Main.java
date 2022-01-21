@@ -20,11 +20,11 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Register register = new Register();
-//		register.setFirstName("Raunak");
-//		register.setLastName("Chandak");
-//		register.setId("raunak12345");
-//		register.setEmail("raunakchandak65@gmail.com");
-//		register.setPassword("rc@raunak12345");
+//		register.setFirstName("Nikhil");
+//		register.setLastName("Pathak");
+//		register.setId("nik12345");
+//		register.setEmail("nik@gmail.com");
+//		register.setPassword("12345");
 //		
 //		System.out.println(register);
 		
@@ -40,15 +40,15 @@ public class Main {
 
 //		Class UserService	
 		try {
-			register.setFirstName("abhi");
-			register.setLastName("chivate");
+			register.setFirstName("nikhil");
+			register.setLastName("pathak");
 		} catch (InvalidNameException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
-		register.setEmail("abhi@gmail.com");
-		register.setPassword("abhi1234");
+		register.setEmail("nik@gmail.com");
+		register.setPassword("nik1234");
 		try {
 			register.setId("ab00001");
 		} catch (InvalidIdLengthException e) {
@@ -73,8 +73,8 @@ public class Main {
 			Register register2 = new Register();
 			try {
 				register2.setId("ab0000"+i);
-				register2.setFirstName("abhi"+i);
-				register2.setLastName("chivate"+i);
+				register2.setFirstName("nikhil"+i);
+				register2.setLastName("pathak"+i);
 			} catch (InvalidIdLengthException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -89,7 +89,7 @@ public class Main {
 				// TODO: handle exception
 			}	
 			
-			register2.setPassword("abhi");
+			register2.setPassword("nikhil");
 			String result = service.addUser(register2);
 			System.out.println(result);
 		}

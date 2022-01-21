@@ -75,8 +75,7 @@ public class Register {
 			
 			// user defined exception object must be raised 
 			// by us
-			throw new InvalidIdLengthException
-			("id length is lessthan or eq to 6");
+			throw new InvalidIdLengthException("id length is lessthan or eq to 6");
 			// throw : it will throw the exception 
 		}
 		this.id = id;
