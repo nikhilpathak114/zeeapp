@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Register[] getAllUsers() {
+	public Register[] getUsers() {
 		// TODO Auto-generated method stub
 		return null;
 	}

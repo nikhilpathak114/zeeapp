@@ -2,8 +2,10 @@ package com.zee.zee5app.dto;
 
 import java.util.Objects;
 
+import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidNameException;
+import com.zee.zee5app.exception.InvalidPasswordException;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -40,7 +42,9 @@ public class Register {
 	private String firstName;
 	@Setter(value = AccessLevel.NONE)
 	private String lastName;
+	@Setter(value = AccessLevel.NONE)
 	private String email;
+	@Setter(value = AccessLevel.NONE)
 	private String password;
 	
 	public Register() {
@@ -79,6 +83,21 @@ public class Register {
 			// throw : it will throw the exception 
 		}
 		this.id = id;
+	}
+	
+	public void setEmail(String email) throws InvalidEmailException{
+		
+		if(email.length()<5 || email=="" || email == null) {
+			throw new InvalidEmailException("email is either invalid or not provided.");
+		}
+		this.email = email;
+	}
+	
+	public void setPassword(String password) throws InvalidPasswordException {
+		if(password.length()<3 || password=="" || password == null) {
+			throw new InvalidPasswordException("Password galat h firse try karo");
+		}
+		this.password = password;
 	}
 
 	@Override

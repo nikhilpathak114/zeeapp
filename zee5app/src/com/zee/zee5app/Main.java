@@ -5,8 +5,10 @@ import java.util.Iterator;
 import java.util.Optional;
 
 import com.zee.zee5app.dto.Register;
+import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidNameException;
+import com.zee.zee5app.exception.InvalidPasswordException;
 import com.zee.zee5app.repository.UserRepository;
 import com.zee.zee5app.service.UserService;
 import com.zee.zee5app.service.impl.UserServiceImpl;
@@ -47,11 +49,25 @@ public class Main {
 			e1.printStackTrace();
 		}
 		
-		register.setEmail("nik@gmail.com");
-		register.setPassword("nik1234");
+//		register.setEmail("nik@gmail.com");
+//		register.setPassword("nik1234");
 		try {
 			register.setId("ab00001");
 		} catch (InvalidIdLengthException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			register.setEmail("nikpathak@gmail.com");
+		} catch (InvalidEmailException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			register.setPassword("nik1234");
+		} catch (InvalidPasswordException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -75,6 +91,8 @@ public class Main {
 				register2.setId("ab0000"+i);
 				register2.setFirstName("nikhil"+i);
 				register2.setLastName("pathak"+i);
+				register2.setPassword("nikhil1234"+i);
+				register2.setEmail("nikp@gmail.com");
 			} catch (InvalidIdLengthException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -82,14 +100,15 @@ public class Main {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			catch (Exception e) {
+			catch (InvalidEmailException e) {
 				// TODO: handle exception
+				e.printStackTrace();
 			}
-			catch (Throwable e) {
+			catch (InvalidPasswordException e) {
 				// TODO: handle exception
-			}	
+				e.printStackTrace();
+			}
 			
-			register2.setPassword("nikhil");
 			String result = service.addUser(register2);
 			System.out.println(result);
 		}
@@ -113,7 +132,7 @@ public class Main {
 //		delete user by Id
 		System.out.println(service.deleteUserById("nik1234"));
 //	get all users
-		for (Register register3 : service.getAllUsers()) {
+		for (Register register3 : service.getUsers()) {
 			if(register3!=null) System.out.println(register3);
 		};
 	}
