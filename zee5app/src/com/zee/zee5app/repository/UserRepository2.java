@@ -7,9 +7,9 @@ public class UserRepository2 {
 	
 	private Register[] registers = new Register[10];
 	private static int count=-1;
-	private UserRepository() {
-		// TODO Auto-generated constructor stub
-	}
+//	private UserRepository() {
+//		// TODO Auto-generated constructor stub
+//	}
 	
 	// to return all the user details 
 	
@@ -70,11 +70,11 @@ public class UserRepository2 {
 				
 		
 	}
-	private static UserRepository userRepository;
-	public static UserRepository getInstance() {
+	private static UserRepository2 userRepository;
+	public static UserRepository2 getInstance() {
 		
 		if(userRepository==null)
-			userRepository = new UserRepository();
+			userRepository = new UserRepository2();
 		return userRepository;
 		
 	}

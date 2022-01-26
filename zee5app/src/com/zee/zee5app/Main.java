@@ -1,140 +1,354 @@
 package com.zee.zee5app;
 
-import com.zee.zee5app.dto.Login;
-import java.util.Iterator;
+import java.net.URL;
 import java.util.Optional;
 
+import javax.naming.NameNotFoundException;
+
+import com.zee.zee5app.dto.Login;
 import com.zee.zee5app.dto.Register;
+import com.zee.zee5app.dto.Subscription;
+import com.zee.zee5app.exception.IdNotFoundException;
+import com.zee.zee5app.exception.InvalidAmountException;
 import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidNameException;
 import com.zee.zee5app.exception.InvalidPasswordException;
 import com.zee.zee5app.repository.UserRepository;
+import com.zee.zee5app.dto.Movies;
+import com.zee.zee5app.dto.Series;
 import com.zee.zee5app.service.UserService;
 import com.zee.zee5app.service.impl.UserServiceImpl;
-import com.zee.zee5app.dto.Register;
-import com.zee.zee5app.service.UserService;
-import com.zee.zee5app.service.UserService2;
-import com.zee.zee5app.service.impl.UserServiceImpl;
+import com.zee.zee5app.service.impl.MovieServImpl;
+import com.zee.zee5app.service.impl.SeriesServImpl;
+import com.zee.zee5app.service.impl.SubscriptionServImpl;
+import com.zee.zee5app.service.SubscriptionServ;
+import com.zee.zee5app.service.MovieServ;
+import com.zee.zee5app.service.SeriesServ;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws 
+	InvalidIdLengthException, InvalidNameException, InvalidPasswordException, InvalidEmailException, InvalidAmountException, IdNotFoundException {
+		// TODO Auto-generated method stub
+		UserService service = UserServiceImpl.getInstance();
+		//Use of parameterized constructor
+		//Register register5 = new Register(String id, String firstName, String lastName, String email, String password);
+		Register register6 = new Register("afs140","Akshay", "Sharma", "as9272@yahoo.com", "Mac");
+		System.out.println(register6);
 		
+		//Create register object
 		Register register = new Register();
-//		register.setFirstName("Nikhil");
-//		register.setLastName("Pathak");
-//		register.setId("nik12345");
-//		register.setEmail("nik@gmail.com");
-//		register.setPassword("12345");
-//		
-//		System.out.println(register);
+		// Register : class name
+		// register: reference which will refer your object - in stack memory
+		// new : is used to create object - in heap memory
+		// Register(): default constructor
 		
-		// same as line 16
-//		System.out.println(register.toString());
+		//here in Main we prefer try/catch method as if we use throw method it will hold off all the execution
+		// in other like service, repo etc. we prefer throw method
 		
-		//accessing email from register class / dto package 
-//		System.out.println(register.getEmail());
-		
-		
-//		Class Login
-//		Login login = new Login();
-
-//		Class UserService	
+	    //this is 1st approach as id is not validating name will also not be validated as everything will give null
 		try {
-			register.setFirstName("nikhil");
-			register.setLastName("pathak");
-		} catch (InvalidNameException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-//		register.setEmail("nik@gmail.com");
-//		register.setPassword("nik1234");
-		try {
-			register.setId("ab00001");
+			register.setId("rg0001");
+			register.setFirstName("rajiv");
+			register.setLastName("gupta"); 
 		} catch (InvalidIdLengthException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+	    catch (InvalidNameException e) {
+	    	e.printStackTrace();
+	    }
 		try {
-			register.setEmail("nikpathak@gmail.com");
-		} catch (InvalidEmailException e) {
+			register.setEmail("rg321@gmail.com");
+		} catch (InvalidEmailException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
+		}
+		try {
+			register.setPassword("Sdadr4");
+		} catch (InvalidPasswordException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		
-		try {
-			register.setPassword("nik1234");
-		} catch (InvalidPasswordException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		//String result1  = service.addUser(register);
+		//System.out.println(result1+"checkpoint1");
+		
+		//System.out.println(service.getUserById("rg00001").get()+"checkpoint2");
+		
 		System.out.println(register);
-		// whenever you will print the reference then it 
-		// will call toString() method.
-		
 		System.out.println(register.toString());
-	
+		  
+		// whenever you will print the referenfe then it will call toString() method
 		System.out.println(register.getEmail());
 		
-		// can u create the login object?
-		// then can u print the login detials?
+		//Create login object
 		
-		UserService service = UserServiceImpl.getInstance();
+		Login login  = new Login();
 		
-		for(int i=1;i<=20;i++) {
+		login.setUserName("rg123");
+		login.setPassword("sds");
 		
+		System.out.println(login);
+		
+		// we dont introduce private here to make it accessible
+		//now this line can connect to different files with UserServiceImpl2 and so on
+		
+		// main is consuming the service
+		// if we even call this 100 times it will create only 1 object now
+		
+		// now only id part in register will not be show other
+		
+		System.out.println("\n    THIS IS FOR USER\n");
+		
+		for(int i =1; i<=4;i++) {
 			Register register2 = new Register();
 			try {
-				register2.setId("ab0000"+i);
-				register2.setFirstName("nikhil"+i);
-				register2.setLastName("pathak"+i);
-				register2.setPassword("nikhil1234"+i);
-				register2.setEmail("nikp@gmail.com");
+				register2.setId("rg000"+i);
+				
 			} catch (InvalidIdLengthException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+			
+			//this is 2nd approach
+			try {
+				register2.setFirstName("rajiv");
+				register2.setLastName("gupta"+i);
 			} catch (InvalidNameException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			catch (InvalidEmailException e) {
-				// TODO: handle exception
-				e.printStackTrace();
+			catch(Exception e) {
+				
 			}
-			catch (InvalidPasswordException e) {
-				// TODO: handle exception
-				e.printStackTrace();
+			//it is base class of all exceptions
+			// max available hierarchy is till throwable not above it i.e. Object class
+			catch(Throwable e) {
+				
 			}
+			//this will give error even though Object is a parent class of throwable
+			//It stops at throwable coz Object class is parent class to other methods like toString, hashCode etc.
+//			catch(Object e) {
+//				
+//			}
 			
+			try {
+				register2.setEmail("rg2321@gml.com");
+			} catch (InvalidEmailException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			String result = service.addUser(register2);
-			System.out.println(result);
-		}
-		
-	
-		
-		
-		// userservice object
-		// main is consuming the service ?
-		
-		Optional<Register> optional = service.getUserById("ab00001");
-		
-		if(optional.isPresent()) {
+			//System.out.println(result);
 			
-			System.out.println("getUserById"+optional.get());
-		}
-		else {
-			System.out.println("id not found/available");
 		}
 		
-//		delete user by Id
-		System.out.println(service.deleteUserById("nik1234"));
-//	get all users
-		for (Register register3 : service.getUsers()) {
-			if(register3!=null) System.out.println(register3);
-		};
+		//Register register2 = service.getUserById("rg01") ;
+		//System.out.println(register2!=null);
+
+		
+		for (Register register3 : service.getAllUsers()) {
+			if(register3!=null)
+			 System.out.println(register3);
+					
+		}
+	
+		//we use try catch in main
+		
+		try {
+			Optional<Register> optional = service.getUserById("rg0001");
+			System.out.println(optional);
+		} catch (IdNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("id not found");
+			e.printStackTrace();
+		}
+		
+		//now we delete 1 id
+		try {
+			service.deleteUserById("rg0001");
+		} catch (IdNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		service.getAllUserDetails().forEach(e->System.out.println(e));
+		
+		System.out.println("\n    THIS IS FOR SUBSCRIPTION\n");
+			
+			
+		SubscriptionServ service2 = SubscriptionServImpl.getInstance();
+		
+		for(int i =1; i<=3;i++) {
+			Subscription subscription = new Subscription();
+			try {
+			subscription.setId("sub00"+i);
+			}
+			catch (InvalidIdLengthException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			subscription.setAutoRenewal(null);
+			subscription.setDateOfPurchase(null);
+			subscription.setExpiryDate(null);
+			try {
+				subscription.setAmount(1500);
+			} catch (InvalidAmountException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			subscription.setPaymentMode(null);
+			subscription.setStatus(null);
+			subscription.setType(null);
+			
+			String result = service2.addSubscription(subscription);
+			//System.out.println(result);
+			
+		}
+
+		
+		for (Subscription subscription : service2.getAllSubscription()) {
+			if(subscription!=null)
+			    System.out.println(subscription);
+					
+		}
+		
+		try {
+			Optional<Subscription> optional = service2.getSubscriptionById("sub001");
+			System.out.println(optional);
+		} catch (IdNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("id not found");
+			e.printStackTrace();
+		}
+		
+		try {
+			service2.deleteSubscription("sub001");
+		} catch (IdNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		System.out.println("\n    THIS IS FOR MOVIES\n");
+		
+		MovieServ service3 = MovieServImpl.getInstance();
+		for(int i =1; i<=5;i++) {
+			Movies movie = new Movies();
+			try {
+			movie.setId("mov00"+i);
+			}
+			catch (InvalidIdLengthException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				movie.setMovieName("abc"+i);
+			} catch (NameNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			movie.setAgeLimit(null);
+			movie.setCast(new String[] {"hrk","abt","tdc","sdf"});
+			movie.setGenre("action"+i);
+			movie.setLength(null);
+			movie.setReleaseDate(null);
+			movie.setTrailer(null);
+			String result = service3.addMovie(movie);
+			//System.out.println(result);
+			
+		}
+		
+		for (Movies movie : service3.getAllMovie()) {
+			if(movie!=null)
+			 System.out.println(movie);
+					
+		}
+		
+		try {
+			Optional<Movies> optional = service3.getMovieById("mov001");
+			System.out.println(optional);
+		} catch (IdNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("id not found");
+			e.printStackTrace();
+		}
+		
+		try {
+			service3.deleteMovie("mov001");
+		} catch (IdNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		System.out.println("\n    THIS IS FOR SERIES\n");
+		
+		SeriesServ service4 = SeriesServImpl.getInstance();
+		for(int i =1; i<=7;i++) {
+			Series series = new Series();
+			series.setId("sr000"+i);
+			try {
+				series.setSeriesName("xyz"+i);
+			} catch (NameNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			series.setAgeLimit(null);
+			series.setCast(new String[] {"ytd","efd","gfh","trd"});
+			series.setGenre("thriller"+i);
+			series.setLength(null);
+			series.setReleaseDate(null);
+			series.setTrailer(null);
+			String result = service4.addSeries(series);
+			//System.out.println(result);
+			
+		}
+		
+		for (Series series : service4.getAllSeries()) {
+			if(series!=null)
+			 System.out.println(series);
+					
+		}
+		
+		
+		try {
+			Optional<Series> optional = service4.getSeriesById("sr0001");
+			System.out.println(optional);
+		} catch (IdNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("id not found");
+			e.printStackTrace();
+		}
+		
+		try {
+			service4.deleteSeries("sr0001");
+		} catch (IdNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		System.out.println("\nAfter updatig the series");
+		
+		try {
+			Series series5 = new Series("sr0002","xyz1",null,null,null,null,null,null);
+			service4.modifySeries("sr0002", series5);
+		} catch (NameNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InvalidIdLengthException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//this gives an error now coz its an interface thing
+		//UserRepository repository = new UserRepository();
+		
+		//UserRepository repository = null;
+	    
+		service4.getAllSeries().forEach(e->System.out.println(e));
+
 	}
 
 }
