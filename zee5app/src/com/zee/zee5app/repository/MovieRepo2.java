@@ -20,10 +20,10 @@ public class MovieRepo2 {
 			System.arraycopy(movie, 0, temp, 0, movies.length);
 			movies = temp;
 			movies[++count] = movie;
-			return "Success2";	
+			return "Success";	
 		}
 		movies[++count] = movie;
-		return "Success2";			
+		return "Success";			
 	}
 	
 	public String deleteMovie(String id) {

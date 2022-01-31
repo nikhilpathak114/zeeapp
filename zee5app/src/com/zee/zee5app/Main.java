@@ -34,7 +34,7 @@ public class Main {
 		UserService service = UserServiceImpl.getInstance();
 		//Use of parameterized constructor
 		//Register register5 = new Register(String id, String firstName, String lastName, String email, String password);
-		Register register6 = new Register("afs140","Akshay", "Sharma", "as9272@yahoo.com", "Mac");
+		Register register6 = new Register("ab00001","nikhil", "pathak", "nik@gmail.com", "password@1234");
 		System.out.println(register6);
 		
 		//Create register object
@@ -49,9 +49,9 @@ public class Main {
 		
 	    //this is 1st approach as id is not validating name will also not be validated as everything will give null
 		try {
-			register.setId("rg0001");
-			register.setFirstName("rajiv");
-			register.setLastName("gupta"); 
+			register.setId("ab00001");
+			register.setFirstName("nikhil");
+			register.setLastName("pathak"); 
 		} catch (InvalidIdLengthException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,13 +60,13 @@ public class Main {
 	    	e.printStackTrace();
 	    }
 		try {
-			register.setEmail("rg321@gmail.com");
+			register.setEmail("nik@gmail.com");
 		} catch (InvalidEmailException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			register.setPassword("Sdadr4");
+			register.setPassword("password@1234");
 		} catch (InvalidPasswordException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -88,8 +88,8 @@ public class Main {
 		
 		Login login  = new Login();
 		
-		login.setUserName("rg123");
-		login.setPassword("sds");
+		login.setUserName("nikhil");
+		login.setPassword("password123");
 		
 		System.out.println(login);
 		
@@ -106,7 +106,7 @@ public class Main {
 		for(int i =1; i<=4;i++) {
 			Register register2 = new Register();
 			try {
-				register2.setId("rg000"+i);
+				register2.setId("ab0000"+i);
 				
 			} catch (InvalidIdLengthException e) {
 				// TODO Auto-generated catch block
@@ -115,8 +115,8 @@ public class Main {
 			
 			//this is 2nd approach
 			try {
-				register2.setFirstName("rajiv");
-				register2.setLastName("gupta"+i);
+				register2.setFirstName("nikhil");
+				register2.setLastName("pathak"+i);
 			} catch (InvalidNameException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -136,7 +136,7 @@ public class Main {
 //			}
 			
 			try {
-				register2.setEmail("rg2321@gml.com");
+				register2.setEmail("nik@gml.com");
 			} catch (InvalidEmailException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -159,7 +159,7 @@ public class Main {
 		//we use try catch in main
 		
 		try {
-			Optional<Register> optional = service.getUserById("rg0001");
+			Optional<Register> optional = service.getUserById("ab00001");
 			System.out.println(optional);
 		} catch (IdNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -169,7 +169,7 @@ public class Main {
 		
 		//now we delete 1 id
 		try {
-			service.deleteUserById("rg0001");
+			service.deleteUserById("ab00001");
 		} catch (IdNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -185,7 +185,7 @@ public class Main {
 		for(int i =1; i<=3;i++) {
 			Subscription subscription = new Subscription();
 			try {
-			subscription.setId("sub00"+i);
+			subscription.setId("sub0000"+i);
 			}
 			catch (InvalidIdLengthException e1) {
 				// TODO Auto-generated catch block
@@ -217,7 +217,7 @@ public class Main {
 		}
 		
 		try {
-			Optional<Subscription> optional = service2.getSubscriptionById("sub001");
+			Optional<Subscription> optional = service2.getSubscriptionById("sub00001");
 			System.out.println(optional);
 		} catch (IdNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -226,7 +226,7 @@ public class Main {
 		}
 		
 		try {
-			service2.deleteSubscription("sub001");
+			service2.deleteSubscription("sub00001");
 		} catch (IdNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -238,7 +238,7 @@ public class Main {
 		for(int i =1; i<=5;i++) {
 			Movies movie = new Movies();
 			try {
-			movie.setId("mov00"+i);
+			movie.setId("mv0000"+i);
 			}
 			catch (InvalidIdLengthException e1) {
 				// TODO Auto-generated catch block
@@ -268,7 +268,7 @@ public class Main {
 		}
 		
 		try {
-			Optional<Movies> optional = service3.getMovieById("mov001");
+			Optional<Movies> optional = service3.getMovieById("mv00001");
 			System.out.println(optional);
 		} catch (IdNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -277,7 +277,7 @@ public class Main {
 		}
 		
 		try {
-			service3.deleteMovie("mov001");
+			service3.deleteMovie("mv00001");
 		} catch (IdNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -314,7 +314,7 @@ public class Main {
 		
 		
 		try {
-			Optional<Series> optional = service4.getSeriesById("sr0001");
+			Optional<Series> optional = service4.getSeriesById("sr00001");
 			System.out.println(optional);
 		} catch (IdNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -323,7 +323,7 @@ public class Main {
 		}
 		
 		try {
-			service4.deleteSeries("sr0001");
+			service4.deleteSeries("sr00001");
 		} catch (IdNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -332,8 +332,8 @@ public class Main {
 		System.out.println("\nAfter updatig the series");
 		
 		try {
-			Series series5 = new Series("sr0002","xyz1",null,null,null,null,null,null);
-			service4.modifySeries("sr0002", series5);
+			Series series5 = new Series("sr00002","xyz1",null,null,null,null,null,null);
+			service4.modifySeries("sr00002", series5);
 		} catch (NameNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

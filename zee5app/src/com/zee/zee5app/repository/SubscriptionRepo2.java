@@ -22,10 +22,10 @@ public class SubscriptionRepo2 {
 		    subscriptions = temp;
 		    subscriptions[++count] = subscription;
 		    
-		    return "success1";
+		    return "success";
 		}
 		subscriptions[++count] = subscription;
-	    return "success1";
+	    return "success";
 		
 	}
 	

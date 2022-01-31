@@ -21,10 +21,10 @@ public class SeriesRepo2 {
 			seriess = temp;
 			seriess[++count] = series;
 			
-			return "Success4";
+			return "Success";
 		}
 		seriess[++count] = series;
-		return "Success4";
+		return "Success";
 	}
 	
 

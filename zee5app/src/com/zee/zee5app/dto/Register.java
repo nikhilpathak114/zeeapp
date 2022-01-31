@@ -104,8 +104,8 @@ public class Register implements Comparable<Register>{
 	}
 
 	public void setPassword(String password) throws InvalidPasswordException {
-		if(password.matches("[A-Za-z0-9]+") == false || !(Character.isUpperCase(password.charAt(0))))
-			throw new InvalidPasswordException("password should only contain alphanumeric characters and first letter uppercase");
+		if(password == null || password == " ")
+			throw new InvalidPasswordException("Invalid password");
 		this.password = password;
 	}
 
