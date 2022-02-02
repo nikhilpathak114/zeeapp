@@ -43,6 +43,7 @@ public class UserRepositoryImpl implements UserRepository {
 	@Autowired // it will bring ur already created objects either by using name/type;
 	DataSource dataSource;
 	@Autowired
+	PasswordUtils passwordUtils;
 	private LoginRepo loginRepository ;
 	
 	public UserRepositoryImpl() throws IOException {
@@ -70,8 +71,8 @@ public class UserRepositoryImpl implements UserRepository {
 			preparedStatement.setString(3, register.getLastName());
 			preparedStatement.setString(4, register.getEmail());
 			preparedStatement.setBigDecimal(5, register.getContactnumber());
-			String salt = PasswordUtils.getSalt(30);
-			String encryptedPassword = PasswordUtils.generateSecurePassword(register.getPassword(),salt);
+			String salt = passwordUtils.getSalt(30);
+			String encryptedPassword = passwordUtils.generateSecurePassword(register.getPassword(),salt);
 			preparedStatement.setString(6, encryptedPassword);
 			
 			
@@ -91,8 +92,7 @@ public class UserRepositoryImpl implements UserRepository {
 				login.setRegid(register.getId());
 				login.setRole(ROLE.ROLE_USER);
 				String res = loginRepository.addCredentials(login);
-				if(res.equals("Success")) {
-					connection.commit();
+				if(res.equals("Success")) {			
 					return "Success";
 				}
 				else {

@@ -1,0 +1,64 @@
+package com.zee.zee5app.dto;
+
+import java.net.URL;
+import java.lang.*;
+import java.util.Objects;
+import javax.naming.NameNotFoundException;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.zee.zee5app.exception.InvalidIdLengthException;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+//@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "movieName")})
+public class Movies implements Comparable<Movies>{
+
+	@Id
+	@Column(name="moviesid")
+	private String id;
+	@NotBlank
+	private String movieName;
+	@Min(value=60)
+	private int length;
+	@NotBlank
+	private String genre;
+	@NotNull
+	private String releaseDate;
+	@NotBlank
+	private String trailer;
+	@NotBlank
+	private String Cast;
+	@Max(value=70)
+	private int ageLimit;
+	@NotBlank
+	private String language;
+
+	@Override
+	public int compareTo(Movies o) {
+		// TODO Auto-generated method stub
+		return this.id.compareTo(o.getId());
+	}
+	
+}

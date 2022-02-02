@@ -49,7 +49,7 @@ public class LoginRepoImpl implements LoginRepo {
 			int result = prepStatement.executeUpdate();
 			if (result > 0) {
 				connection.commit();
-				return "success";
+				return "Success";
 			} else {
 				connection.rollback();
 				return "fail";

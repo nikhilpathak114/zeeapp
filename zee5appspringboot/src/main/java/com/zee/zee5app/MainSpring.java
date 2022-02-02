@@ -18,7 +18,6 @@ import com.zee.zee5app.exception.InvalidNameException;
 import com.zee.zee5app.exception.InvalidPasswordException;
 import com.zee.zee5app.repository.MovieRepo;
 import com.zee.zee5app.repository.UserRepository;
-import com.zee.zee5app.repository.impl.MovieRepoImpl;
 import com.zee.zee5app.service.UserService;
 import com.zee.zee5app.service.impl.UserServiceImpl;
 
