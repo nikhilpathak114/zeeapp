@@ -24,10 +24,6 @@ public class SubscriptionServImpl implements SubscriptionServ {
 
 	@Autowired
 	private SubscriptionRepo repository;
-	
-    private SubscriptionServImpl() {
-		
-	}
     
 	@Override
 	public String addSubscription(Subscription subscription) throws InvalidAmountException {

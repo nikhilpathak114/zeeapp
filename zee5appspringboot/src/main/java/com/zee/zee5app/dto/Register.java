@@ -1,13 +1,20 @@
 package com.zee.zee5app.dto;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.zee.zee5app.exception.InvalidEmailException;
@@ -68,7 +75,7 @@ public class Register implements Comparable<Register>{
 //	}
 //	
 	@Id //it will consider this column as PK
-	@Column(name ="regid")
+	@Column(name ="regid", nullable=false, unique= true)
 	private String id;
 	
 	@Size(max=50)
@@ -84,8 +91,8 @@ public class Register implements Comparable<Register>{
 	@NotBlank
 	private String password;
 	
-	
-	private String contactnumber;
+	@NotNull
+	private BigDecimal contactnumber;
 
 	//here Main is caller for this
 	
@@ -99,7 +106,15 @@ public class Register implements Comparable<Register>{
 		//return o.id.compareTo(this.getId())
 	}
 	
+	@ManyToMany
+	//3rd  table
+	@JoinTable(name="user_roles",joinColumns = @JoinColumn(name="regid"),
+	inverseJoinColumns = @JoinColumn(name="roleId"))//registered user(regid) and role(roleid)
+	private Set<Role> roles = new HashSet<>();
 	
+	@ManyToOne
+	@JoinColumn(name="regId",insertable=false, updatable=false)
+	private Subscription subscriber;
 
 //	@Override
 //	public int hashCode() {

@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import javax.naming.InvalidNameException;
 
+import org.springframework.stereotype.Repository;
+
 import com.zee.zee5app.dto.Movies;
 import com.zee.zee5app.dto.Subscription;
 import com.zee.zee5app.repository.SubscriptionRepo;
@@ -12,7 +14,7 @@ import com.zee.zee5app.exception.InvalidAmountException;
 import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidPasswordException;
-
+@Repository
 public interface SubscriptionServ {
 	
 	public String addSubscription(Subscription subscription) throws InvalidAmountException;
@@ -20,7 +22,7 @@ public interface SubscriptionServ {
 	public String modifySubscription(String id, Subscription subscription);
 	public Optional<Subscription> getSubscriptionById(String id) throws IdNotFoundException;
 	public Subscription[] getAllSubscription();
-	Optional<List<Subscription>> getAllSubscriptionDetails() throws InvalidNameException, IdNotFoundException,
+	public Optional<List<Subscription>> getAllSubscriptionDetails() throws InvalidNameException, IdNotFoundException,
 			InvalidPasswordException, InvalidEmailException, InvalidIdLengthException;
 
 

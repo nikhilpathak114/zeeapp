@@ -44,12 +44,18 @@ public class EpisodeServImpl implements EpisodeServ {
 	@Override
 	public String deleteEpisode(String id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		Optional<Episodes> optional = this.getEpisodeById(id);
-		if (optional.isEmpty())
-			throw new IdNotFoundException("Record not found");
-		else {
-			epirepository.deleteById(id);
-			return "Success";
+		try {
+			Optional<Episodes> optional = this.getEpisodeById(id);
+			if (optional.isEmpty())
+				throw new IdNotFoundException("Record not found");
+			else {
+				epirepository.deleteById(id);
+				return "Success";
+			}
+		} catch (IdNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new IdNotFoundException(e.getMessage());
 		}
 	}
 

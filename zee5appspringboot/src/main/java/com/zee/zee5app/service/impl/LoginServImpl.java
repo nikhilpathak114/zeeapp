@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zee.zee5app.dto.Login;
-import com.zee.zee5app.dto.ROLE;
 import com.zee.zee5app.dto.Register;
 import com.zee.zee5app.exception.IdNotFoundException;
 import com.zee.zee5app.repository.LoginRepo;
@@ -29,15 +28,15 @@ public class LoginServImpl implements LoginServ {
 	}
 
 	@Override
-	public String deleteCredentials(String id) throws IdNotFoundException {
+	public String deleteCredentials(String userName) throws IdNotFoundException {
 		// TODO Auto-generated method stub
 		try {
-			String optional = this.deleteCredentials(id);
+			String optional = this.deleteCredentials(userName);
 			if(optional.isEmpty()) {
 				throw new IdNotFoundException("record not found");
 			}
 			else {
-				loginrepository.deleteById(id);
+				loginrepository.deleteById(userName);
 				return "success";
 			}
 		} catch (IdNotFoundException e) {
@@ -48,15 +47,8 @@ public class LoginServImpl implements LoginServ {
 	}
 
 	@Override
-	public String changePassword(String username, String password) {
+	public String changePassword(String userName, String password) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public String changeRole(String username, ROLE role) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

@@ -3,6 +3,8 @@ package com.zee.zee5app.dto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
@@ -46,5 +48,9 @@ public class Episodes implements Comparable<Episodes> {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@ManyToOne
+	@JoinColumn(name="seriesId")
+	private Series series;
 
 }
