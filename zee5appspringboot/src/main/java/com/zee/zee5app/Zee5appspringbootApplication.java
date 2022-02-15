@@ -1,34 +1,17 @@
 package com.zee.zee5app;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
-
-import javax.naming.NameNotFoundException;
-import javax.sql.DataSource;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import com.zee.zee5app.dto.Episodes;
-import com.zee.zee5app.dto.Movies;
-import com.zee.zee5app.dto.Register;
-import com.zee.zee5app.dto.Series;
-import com.zee.zee5app.dto.Subscription;
 import com.zee.zee5app.exception.IdNotFoundException;
 import com.zee.zee5app.exception.InvalidEmailException;
 import com.zee.zee5app.exception.InvalidIdLengthException;
 import com.zee.zee5app.exception.InvalidNameException;
 import com.zee.zee5app.exception.InvalidPasswordException;
-import com.zee.zee5app.repository.UserRepository;
-import com.zee.zee5app.service.EpisodeServ;
-import com.zee.zee5app.service.MovieServ;
-import com.zee.zee5app.service.SeriesServ;
-import com.zee.zee5app.service.SubscriptionServ;
-import com.zee.zee5app.service.UserService;
 
 import lombok.AllArgsConstructor;
 
@@ -46,8 +29,13 @@ public class Zee5appspringbootApplication {
 //
 //		UserService userservice = applicationContext.getBean(UserService.class);
 //		try {
-//			Register register = new Register("ysh00010", "Hitesh", "singh", "abc13361@gmail.com", "pass@3421", new BigDecimal("7894561230"));	
-//			System.out.println(userservice.addUser(register));
+//			Register register = new Register("ysh00010", "Hitesh", "singh", "abc13361@gmail.com", "pass@3421", new BigDecimal("7894561230"),null,null);	
+//			try {
+//				System.out.println(userservice.addUser(register));
+//			} catch (AlreadyExistsException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 //		} catch (SQLException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
@@ -233,7 +221,7 @@ public class Zee5appspringbootApplication {
 //
 //		System.out.println(dataSource != null);
 
-		applicationContext.close();
+//		applicationContext.close();
 	}
 
 }

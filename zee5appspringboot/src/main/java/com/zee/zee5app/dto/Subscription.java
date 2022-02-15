@@ -1,22 +1,16 @@
 package com.zee.zee5app.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.zee.zee5app.exception.InvalidAmountException;
-import com.zee.zee5app.exception.InvalidIdLengthException;
-
-import lombok.AccessLevel;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +31,7 @@ public class Subscription implements Comparable<Subscription>{
 	
 	@Id
 	@NotBlank
-	private String id;
+	private String subid;
 	@NotBlank
 	private String type;
 	
@@ -45,7 +39,6 @@ public class Subscription implements Comparable<Subscription>{
     private String dateOfPurchase;
     private String paymentMode;
     
-    @Setter(value = AccessLevel.NONE)
     @NotNull
     private int amount;
     
@@ -56,17 +49,16 @@ public class Subscription implements Comparable<Subscription>{
     
     @NotNull
     private String expiryDate;
-
-    @NotBlank
-    private String regid;
     
 	@Override
 	public int compareTo(Subscription o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.subid.compareTo(o.getSubid());
 	}
 	
-	@OneToMany(mappedBy = "subscriber",cascade = CascadeType.ALL)
-	private List<Register> registers = new ArrayList<Register>();
+	@OneToOne(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JoinColumn(name = "userId")
+	private User user;
 
 }

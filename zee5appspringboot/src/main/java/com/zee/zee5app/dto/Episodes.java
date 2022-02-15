@@ -2,15 +2,15 @@ package com.zee.zee5app.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Length;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -34,8 +34,6 @@ public class Episodes implements Comparable<Episodes> {
 	@Column(name = "epiId")
 	private String id;
 	@NotBlank
-	private String serId;
-	@NotBlank
 	private String name;
 	@NotNull
 	private double length;
@@ -49,8 +47,9 @@ public class Episodes implements Comparable<Episodes> {
 		return 0;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name="seriesId")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JoinColumn(name = "serId")
 	private Series series;
 
 }

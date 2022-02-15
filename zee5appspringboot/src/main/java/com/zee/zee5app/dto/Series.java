@@ -1,8 +1,5 @@
 package com.zee.zee5app.dto;
 
-import java.net.URL;
-import java.lang.*;
-import javax.naming.NameNotFoundException;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,11 +12,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.zee.zee5app.exception.InvalidIdLengthException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +23,6 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 //@Data
 @Setter
 @Getter
@@ -71,6 +65,7 @@ public class Series implements Comparable<Series> {
 		return this.id.compareTo(o.getId());
 	}
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "series",cascade=CascadeType.ALL)
 	private List<Episodes> episodes = new ArrayList<>(); 
 }

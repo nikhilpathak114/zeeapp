@@ -1,20 +1,16 @@
 package com.zee.zee5app.service.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import javax.naming.InvalidNameException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.zee.zee5app.dto.Login;
-import com.zee.zee5app.dto.Register;
-import com.zee.zee5app.exception.InvalidIdLengthException;
+import com.zee.zee5app.dto.User;
 import com.zee.zee5app.exception.AlreadyExistsException;
 import com.zee.zee5app.exception.IdNotFoundException;
-import com.zee.zee5app.exception.InvalidEmailException;
-import com.zee.zee5app.exception.InvalidPasswordException;
 import com.zee.zee5app.repository.LoginRepo;
 import com.zee.zee5app.repository.UserRepository;
 import com.zee.zee5app.service.LoginServ;
@@ -22,95 +18,86 @@ import com.zee.zee5app.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
+
 	@Autowired
-	private UserRepository userrepository ;
+	private UserRepository userrepository;
 	@Autowired
 	private LoginServ loginservice;
 	@Autowired
 	private LoginRepo loginrepository;
+//	@Autowired
+//	private PasswordUtils passwordUtils;
 
 	@Override
-	public String updateUser(String id, Register register) {
+	public User updateUser(User register) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		return null;
+		if(userrepository.findById(register.getId()).isEmpty()) {
+			throw new IdNotFoundException("Record not found");
+		}
+		return userrepository.save(register);
 	}
 	
 	@Override
-	@org.springframework.transaction.annotation.Transactional(rollbackFor = AlreadyExistsException.class)
-	public String addUser(Register register) throws AlreadyExistsException, SQLException{
+	@Transactional(rollbackFor = AlreadyExistsException.class)
+	public User addUser(User register) throws AlreadyExistsException {
 		// TODO Auto-generated method stub
-		
-		if(userrepository.existsByEmail(register.getEmail()) || userrepository.existsByContactnumber(register.getContactnumber()) ) {
-			throw new AlreadyExistsException("This record already exist.");
+		if(userrepository.existsByEmail(register.getEmail())) {
+			throw new AlreadyExistsException("This record already exists");
 		}
-		Register register2 = userrepository.save(register);
-			if(register2!=null) {
-				if(loginrepository.existsByUserName(register.getEmail())){
-					throw new AlreadyExistsException("This record already exist.");
-				}
-				Login login = new Login();
-				login.setRegid(register.getId());
-				login.setUserName(register.getEmail());
-				login.setPassword(register.getPassword());
-				String result = loginservice.addCredentials(login);
-				if(result.equals("Success")) {
-					return "user added in login and register successfully";
-				}
-				else{
-					return "Failed";
-				}
+		register.setPassword(register.getPassword());
+		User register2 = userrepository.save(register);
+		if (register2!=null) {
+			Login login = new Login();
+			if (loginrepository.existsByUserName(login.getUserName())) {
+				throw new AlreadyExistsException("This record already exists");
 			}
-			else {
-				return "Failed";
-			}
+			Login result = loginservice.addCredentials(login);
+			if (result!=null)
+				return register2;
+			else
+				return null;
+		}
+		else
+			return null;
+	}
+
+	@Override
+	public Optional<User> getUserById(Long id) throws IdNotFoundException {
+		// TODO Auto-generated method stub
+		Optional<User> optional = userrepository.findById(id);
+		if (optional.isEmpty()) {
+			throw new IdNotFoundException("Id does not exist");
+		}
+		return optional;
 	}
 
 
 	@Override
-	public Optional<Register> getUserById(String id) throws IdNotFoundException, InvalidPasswordException, InvalidEmailException {
+	public String deleteUserById(Long id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		
-		return userrepository.findById(id);
-	}
-
-
-	@Override
-	public String deleteUserById(String id) throws IdNotFoundException, InvalidPasswordException, InvalidEmailException {
-		// TODO Auto-generated method stub
-		
-		try {
-			Optional<Register> optional = this.getUserById(id);
-			if(optional.isEmpty()) {
-				throw new IdNotFoundException("record not found");
-			}
-			else {
-				userrepository.deleteById(id);
-				return "success";
-			}
-		} catch (IdNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new IdNotFoundException(e.getMessage());
+		Optional<User> optional = this.getUserById(id);
+		if (optional.isEmpty())
+			throw new IdNotFoundException("Record not found");
+		else {
+			userrepository.deleteById(id);
+			return "Success";
 		}
 	}
 
 
 	@Override
-	public Optional<List<Register>> getAllUsersDetails() throws InvalidNameException, IdNotFoundException,
-			InvalidPasswordException, InvalidEmailException, InvalidIdLengthException {
+	public Optional<List<User>> getAllUserDetails() {
 		// TODO Auto-generated method stub
 		return Optional.ofNullable(userrepository.findAll());
 	}
 
 
 	@Override
-	public Register[] getAllUsers() throws InvalidIdLengthException, com.zee.zee5app.exception.InvalidNameException,
-			InvalidEmailException, InvalidPasswordException, SQLException {
+	public User[] getAllUsers() {
 		// TODO Auto-generated method stub
-		List<Register> list = userrepository.findAll();
-		Register[] array = new Register[list.size()];
-		
-		return list.toArray(array);
+		List<User> list = userrepository.findAll();
+		User[] registers = new User[list.size()];
+		return list.toArray(registers);
 	}
 	
 }

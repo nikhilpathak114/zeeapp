@@ -1,5 +1,6 @@
 package com.zee.zee5app.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +17,8 @@ public interface MovieRepo extends JpaRepository<Movies, String> {
 	//find a movie details by moviename and rel date
 	Optional<Movies> findByMovieNameAndReleaseDate(String movieName, String releaseDate);
 	
-	Optional<Movies> findByCast(String cast);
+	Optional<List<Movies>> findAllByCast(String cast);
 	Optional<Movies> findByMovieNameAndLanguage(String movieName, String language);
+	Boolean existsByMovieName(String movieName);
 	
 }

@@ -1,38 +1,32 @@
 package com.zee.zee5app.dto;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.zee.zee5app.exception.InvalidEmailException;
-import com.zee.zee5app.exception.InvalidIdLengthException;
-import com.zee.zee5app.exception.InvalidNameException;
-import com.zee.zee5app.exception.InvalidPasswordException;
-
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import java.lang.*;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 //write @Data and then press ctrl+space then enter to get the lombok
 //@Data
@@ -48,9 +42,8 @@ import java.math.BigInteger;
 //ORM mapping purpose
 @Entity //entity class is used for ORM
 //we can customize the table name
-@Table(name = "reg")
-
-public class Register implements Comparable<Register>{
+@Table(name = "reg",uniqueConstraints = {@UniqueConstraint(columnNames = "username"),@UniqueConstraint(columnNames = "email")})
+public class User implements Comparable<User>{
 //public class Register {
 	//add contact number field
 //	public Register(String id, String firstName, String lastName, String email, BigDecimal contactnumber, String password) 
@@ -75,12 +68,19 @@ public class Register implements Comparable<Register>{
 //	}
 //	
 	@Id //it will consider this column as PK
-	@Column(name ="regid", nullable=false, unique= true)
-	private String id;
+	@Column(name ="regid")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	@Size(max=20)
+	@NotBlank
+	private String username;
 	
 	@Size(max=50)
 	@NotBlank
 	private String firstName;
+	@Size(max=50)
+	@NotBlank
 	private String lastName;
 	
 	@Size(max=50)
@@ -91,13 +91,13 @@ public class Register implements Comparable<Register>{
 	@NotBlank
 	private String password;
 	
-	@NotNull
-	private BigDecimal contactnumber;
+//	@NotNull
+//	private BigInteger contactnumber;
 
 	//here Main is caller for this
 	
 	@Override
-	public int compareTo(Register o) {
+	public int compareTo(User o) {
 		 //TODO Auto-generated method stub
 		//ascending
 		return this.id.compareTo(o.getId());
@@ -106,40 +106,26 @@ public class Register implements Comparable<Register>{
 		//return o.id.compareTo(this.getId())
 	}
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	//3rd  table
 	@JoinTable(name="user_roles",joinColumns = @JoinColumn(name="regid"),
 	inverseJoinColumns = @JoinColumn(name="roleId"))//registered user(regid) and role(roleid)
-	private Set<Role> roles = new HashSet<>();
+	private Set<Role> roles = new HashSet<Role>();
 	
-	@ManyToOne
-	@JoinColumn(name="regId",insertable=false, updatable=false)
-	private Subscription subscriber;
-
-//	@Override
-//	public int hashCode() {
-//		return Objects.hash(email, firstName, id, lastName, password);
-//	}
-//
-//	@Override
-//	we override to know how to handle it behind the scenes
-//	public boolean equals(Object obj) {
-//		//this are the 5 points under equals contract
-//		if (this == obj)
-//			return true;
-//		if (obj == null)
-//			return false;
-//		if (getClass() != obj.getClass())
-//			return false;
-//		Register other = (Register) obj;
-//		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
-//				&& Objects.equals(id, other.id) && Objects.equals(lastName, other.lastName)
-//				&& Objects.equals(password, other.password);
-//	}
+	public User(String username, String email, String password,String firstName, String lastName) {
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
 	
-	//private stuff will be accessible only within the class
+	@OneToOne(mappedBy = "register", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+	private Subscription subscription;
 	
-	//setter function : is used to set the value for a particular field
-	//getter function : to get/return the value of a specific field
+	@OneToOne(mappedBy = "register", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+	private Login login;
 	
 }

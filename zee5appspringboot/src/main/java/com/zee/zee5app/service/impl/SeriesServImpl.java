@@ -3,18 +3,12 @@ package com.zee.zee5app.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import javax.naming.InvalidNameException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zee.zee5app.dto.Login;
-import com.zee.zee5app.dto.Register;
 import com.zee.zee5app.dto.Series;
+import com.zee.zee5app.exception.AlreadyExistsException;
 import com.zee.zee5app.exception.IdNotFoundException;
-import com.zee.zee5app.exception.InvalidEmailException;
-import com.zee.zee5app.exception.InvalidIdLengthException;
-import com.zee.zee5app.exception.InvalidPasswordException;
 import com.zee.zee5app.repository.SeriesRepo;
 import com.zee.zee5app.service.SeriesServ;
 
@@ -22,63 +16,52 @@ import com.zee.zee5app.service.SeriesServ;
 public class SeriesServImpl implements SeriesServ {
 
 	@Autowired
-	private SeriesRepo repository;
-    
-	@Override
-	public String addSeries(Series series) {
-		// TODO Auto-generated method stub
-		repository.save(series);
-		if(series!=null) {
-		 return "Success";
-		}
-		else return "Failed";
-	}
+	private SeriesRepo seriesRepository;
 
 	@Override
-	public String deleteSeries(String id) throws IdNotFoundException {
+	public Series addSeries(Series series) throws AlreadyExistsException {
 		// TODO Auto-generated method stub
-		try {
-			Optional<Series> optional = this.getSeriesById(id);
-			if(optional.isEmpty()) {
-				throw new IdNotFoundException("record not found");
-			}
-			else {
-				repository.deleteById(id);
-				return "success";
-			}
-		} catch (IdNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new IdNotFoundException(e.getMessage());
+		if(seriesRepository.existsById(series.getId())) {
+			throw new AlreadyExistsException("This record already exists");
 		}
-	}
-
-	@Override
-	public String modifySeries(String id, Series series) throws IdNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		Series series2 = seriesRepository.save(series);
+		return series2;
 	}
 
 	@Override
 	public Optional<Series> getSeriesById(String id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		return repository.findById(id);
+		Optional<Series> optional = seriesRepository.findById(id);
+		if (optional.isEmpty()) {
+			throw new IdNotFoundException("Id does not exist");
+		}
+		return optional;
 	}
 
 	@Override
 	public Series[] getAllSeries() {
 		// TODO Auto-generated method stub
-		List<Series> list = repository.findAll();
-		Series[] array = new Series[list.size()];
-		
-		return list.toArray(array);
+		List<Series> list = seriesRepository.findAll();
+		Series[] series = new Series[list.size()];
+		return list.toArray(series);
 	}
-	
+
 	@Override
-	public Optional<List<Series>> getAllSeriesDetails() throws InvalidNameException, IdNotFoundException,
-			InvalidPasswordException, InvalidEmailException, InvalidIdLengthException {
+	public String deleteSeries(String id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		return Optional.ofNullable(repository.findAll());
+		Optional<Series> optional = this.getSeriesById(id);
+		if (optional.isEmpty())
+			throw new IdNotFoundException("Record not found");
+		else {
+			seriesRepository.deleteById(id);
+			return "Success";
+		}
+	}
+
+	@Override
+	public Optional<List<Series>> getAllSeriesDetails() {
+		// TODO Auto-generated method stub
+		return Optional.ofNullable(seriesRepository.findAll());
 	}
 
 }

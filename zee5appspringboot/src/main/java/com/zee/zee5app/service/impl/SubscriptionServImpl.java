@@ -3,21 +3,14 @@ package com.zee.zee5app.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import javax.naming.InvalidNameException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.zee.zee5app.dto.Series;
 import com.zee.zee5app.dto.Subscription;
+import com.zee.zee5app.exception.AlreadyExistsException;
 import com.zee.zee5app.exception.IdNotFoundException;
-import com.zee.zee5app.exception.InvalidAmountException;
-import com.zee.zee5app.exception.InvalidEmailException;
-import com.zee.zee5app.exception.InvalidIdLengthException;
-import com.zee.zee5app.exception.InvalidPasswordException;
 import com.zee.zee5app.repository.SubscriptionRepo;
 import com.zee.zee5app.service.SubscriptionServ;
-import com.zee.zee5app.service.impl.*;
 
 @Service
 public class SubscriptionServImpl implements SubscriptionServ {
@@ -26,58 +19,47 @@ public class SubscriptionServImpl implements SubscriptionServ {
 	private SubscriptionRepo repository;
     
 	@Override
-	public String addSubscription(Subscription subscription) throws InvalidAmountException {
+	public Subscription addSubscription(Subscription subscription) throws AlreadyExistsException {
 		// TODO Auto-generated method stub
-		repository.save(subscription);
-		if(subscription!=null) {
-		 return "Success";
+		if(repository.existsById(subscription.getSubid())) {
+			throw new AlreadyExistsException("This record already exists");
 		}
-		else return "Failed";
-	}
-
-	@Override
-	public String deleteSubscription(String id) throws IdNotFoundException {
-		// TODO Auto-generated method stub
-		try {
-			Optional<Subscription> optional = this.getSubscriptionById(id);
-			if(optional.isEmpty()) {
-				throw new IdNotFoundException("record not found");
-			}
-			else {
-				repository.deleteById(id);
-				return "success";
-			}
-		} catch (IdNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new IdNotFoundException(e.getMessage());
-		}
-	}
-
-	@Override
-	public String modifySubscription(String id, Subscription subscription) {
-		// TODO Auto-generated method stub
-		return null;
+		Subscription subscription2 = repository.save(subscription);
+		return subscription2;
 	}
 
 	@Override
 	public Optional<Subscription> getSubscriptionById(String id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		return repository.findById(id);
+		Optional<Subscription> optional = repository.findById(id);
+		if (optional.isEmpty()) {
+			throw new IdNotFoundException("Id does not exist");
+		}
+		return optional;
 	}
 
 	@Override
-	public Subscription[] getAllSubscription() {
+	public Subscription[] getAllSubscriptions() {
 		// TODO Auto-generated method stub
 		List<Subscription> list = repository.findAll();
-		Subscription[] array = new Subscription[list.size()];
-		
-		return list.toArray(array);
+		Subscription[] subscriptions = new Subscription[list.size()];
+		return list.toArray(subscriptions);
 	}
-	
+
 	@Override
-	public Optional<List<Subscription>> getAllSubscriptionDetails() throws InvalidNameException, IdNotFoundException,
-			InvalidPasswordException, InvalidEmailException, InvalidIdLengthException {
+	public String deleteSubscription(String id) throws IdNotFoundException {
+		// TODO Auto-generated method stub
+		Optional<Subscription> optional = this.getSubscriptionById(id);
+		if (optional.isEmpty())
+			throw new IdNotFoundException("Record not found");
+		else {
+			repository.deleteById(id);
+			return "Success";
+		}
+	}
+
+	@Override
+	public Optional<List<Subscription>> getAllSubscriptionDetails() {
 		// TODO Auto-generated method stub
 		return Optional.ofNullable(repository.findAll());
 	}

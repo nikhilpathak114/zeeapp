@@ -1,7 +1,5 @@
 package com.zee.zee5app.repository;
 
-import java.sql.SQLException;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

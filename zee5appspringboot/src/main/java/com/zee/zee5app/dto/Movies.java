@@ -1,9 +1,5 @@
 package com.zee.zee5app.dto;
 
-import java.net.URL;
-import java.lang.*;
-import java.util.Objects;
-import javax.naming.NameNotFoundException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,9 +10,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.zee.zee5app.exception.InvalidIdLengthException;
-
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -46,8 +39,11 @@ public class Movies implements Comparable<Movies>{
 	private String genre;
 	@NotNull
 	private String releaseDate;
-	@NotBlank
+	
+//	@Lob
+//	private byte[] trailer;
 	private String trailer;
+	
 	@NotBlank
 	private String cast;
 	@Max(value=70)

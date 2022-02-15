@@ -81,7 +81,7 @@ public class Main {
 		System.out.println(register);
 		System.out.println(register.toString());
 		  
-		// whenever you will print the referenfe then it will call toString() method
+		// whenever you will print the reference then it will call toString() method
 		System.out.println(register.getEmail());
 		
 		//Create login object
